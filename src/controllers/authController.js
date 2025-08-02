@@ -37,6 +37,32 @@ async function login(req, res, next) {
   }
 };
 
+async function changePassword(req, res) {
+  try {
+    const userId = req.user.id;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "Old and new password are required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Old password is incorrect" });
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+
+}
+
 
 // სამომავლოდ გამოსაყენებელი ფუნქცია ტოკენის refresh-ისთვის
 // optional: implement refresh if using refresh tokens
@@ -44,4 +70,4 @@ async function refreshToken(req, res) {
   res.status(501).json({ message: 'Not implemented' });
 };
 
-module.exports = {register, login, refreshToken}
+module.exports = {register, login, refreshToken, changePassword}
