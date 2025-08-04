@@ -20,7 +20,7 @@ app.use('/api/movies', routes.movies);
 app.use('/api/categories', routes.categories);
 app.use('/api/comments', routes.comments);
 app.use('/api/favorites', routes.favorites);
-// app.use('/api/users', routes.users);
+// app.use('/api/users', routes.users); // მომავალი პროექტისთვის მჭირდება
 
 // Central error handler
 app.use(errorHandler);
