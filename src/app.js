@@ -22,6 +22,7 @@ app.use('/api/comments', routes.comments);
 app.use('/api/favorites', routes.favorites);
 // app.use('/api/users', routes.users); // მომავალი პროექტისთვის მჭირდება
 
+
 // Central error handler
 app.use(errorHandler);
 
